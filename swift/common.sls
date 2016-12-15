@@ -6,8 +6,9 @@ swift_common_packages:
 
 /etc/swift:
   file.directory:
-  - user: root
-  - group: root
+  - user: swift
+  - group: swift
+  - mode: 0750
   - require:
     - pkg: swift_common_packages
 
@@ -15,8 +16,8 @@ swift_common_packages:
   file.managed:
   - source: salt://swift/files/{{ common.version }}/swift.conf
   - template: jinja
-  - user: root
-  - group: root
+  - user: swift
+  - group: swift
   - mode: 644
   - require:
     - file: /etc/swift
@@ -25,8 +26,18 @@ swift_common_packages:
   file.managed:
   - source: salt://swift/files/{{ common.version }}/memcache.conf
   - template: jinja
-  - user: root
-  - group: root
+  - user: swift
+  - group: swift
+  - mode: 644
+  - require:
+    - file: /etc/swift
+
+/etc/swift/dispersion.conf:
+  file.managed:
+  - source: salt://swift/files/{{ common.version }}/dispersion.conf
+  - template: jinja
+  - user: swift
+  - group: swift
   - mode: 644
   - require:
     - file: /etc/swift
