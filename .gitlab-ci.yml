@@ -1,0 +1,18 @@
+#stages:
+#  - build
+#  - deploy
+build:
+  image: docker.ii.org.nz/openstack/build-packages:buildv1
+  stage: deploy
+  script:
+    - git config --global user.email "not@now.com"
+    - git config --global user.name "Fixme Later"
+    - git rm -f .gitlab-ci.yml
+    - git commit -m 'throw away removal of .gitlab-ci.yml'
+    - gbp buildpackage --git-ignore-branch
+    - cp ../build-area/salt-formula-*.deb .
+  tags:
+    - iimac-docker
+  artifacts:
+    paths:
+      - salt-formula*.deb
